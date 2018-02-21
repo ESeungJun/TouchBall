@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.seungjun.touchball"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".game.MainGame" android:screenOrientation="portrait"/>
+
+        <activity android:name=".game.CountStartGame"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+                  android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".dialog.AlertDialogActivity"
+            android:theme="@style/AlertDialogStyle"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".dialog.AlertDialogPauseActivity"
+            android:theme="@style/AlertDialogStyle"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+
+    </application>
+
+</manifest>

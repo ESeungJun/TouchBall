@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Touchball</string>
+
+    <string name="result_context">이제 침착하게 누르셔도 됩니다.</string>
+    <string name="result_context_count">"초 뒤 버튼 활성화됩니다. \n여러분 진정하세요. 게임 끝났습니다."</string>
+    <string name="pause_context">일시정지 되었습니다.</string>
+</resources>

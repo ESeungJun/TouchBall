@@ -1,0 +1,48 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+    <style name="AlertDialogStyle" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="main_activity_game_title" parent="text_white_50"/>
+    <style name="main_activity_game_level" parent="text_white_30"/>
+
+
+    <style name="text_white_50">
+        <item name="android:textSize">50dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:fontFamily" >Droid Sans</item>
+        <item name="android:includeFontPadding" >false</item>
+    </style>
+
+    <style name="text_white_40">
+        <item name="android:textSize">4dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:fontFamily" >Droid Sans</item>
+        <item name="android:includeFontPadding" >false</item>
+    </style>
+
+    <style name="text_white_30">
+        <item name="android:textSize">30dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:fontFamily" >Droid Sans</item>
+        <item name="android:includeFontPadding" >false</item>
+    </style>
+
+    <style name="text_white_20">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:fontFamily" >Droid Sans</item>
+        <item name="android:includeFontPadding" >false</item>
+    </style>
+</resources>
