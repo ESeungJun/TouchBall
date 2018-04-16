@@ -3,16 +3,15 @@ package com.seungjun.touchball.dialog;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.seungjun.touchball.MainActivity;
 import com.seungjun.touchball.R;
+import com.seungjun.touchball.util.LogUtil;
 import com.seungjun.touchball.util.SettingMode;
 import com.seungjun.touchball.value.ShareData;
 
@@ -34,7 +33,7 @@ public class AlertDialogPauseActivity extends Activity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
+        LogUtil.d(TAG, "onCreate");
         requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이블 없애기
         setContentView(R.layout.alertdialog_pause);
         overridePendingTransition(0, 0);
@@ -45,7 +44,10 @@ public class AlertDialogPauseActivity extends Activity implements View.OnClickLi
 
         mSettingMode = new SettingMode(AlertDialogPauseActivity.this);
 
-        resultMenu.setBackground(mSettingMode.setBackDrawable(level));
+        resultMenu.setBackground(mSettingMode.getBackDrawable(level));
+
+        restartGameBtn.setBackground(mSettingMode.getBackSelectDrawable(level));
+        returnMenuBtn.setBackground(mSettingMode.getBackSelectDrawable(level));
 //        resultTitle.setBackgroundColor(mSettingMode.setBackColor(level));
 
     }

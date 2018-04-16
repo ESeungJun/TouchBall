@@ -2,12 +2,16 @@
 <manifest package="com.seungjun.touchball"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="android.max_aspect" android:value="2.1" />
 
         <activity
             android:name=".MainActivity"
@@ -38,6 +42,14 @@
         <activity
             android:name=".dialog.AlertDialogPauseActivity"
             android:theme="@style/AlertDialogStyle"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".rank.RankActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>

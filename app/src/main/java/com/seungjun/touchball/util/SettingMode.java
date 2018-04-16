@@ -22,7 +22,7 @@ public class SettingMode {
      * 난이도에 따른 컬러설정
      * @param level 난이도
      */
-    public int setBackColor(String level){
+    public int getBackColor(String level){
 
         if(level.equals("easy")){
             return mContext.getResources().getColor(R.color.easy_background);
@@ -44,7 +44,7 @@ public class SettingMode {
      * 난이도에 따른 Drawable
      * @param level 난이도
      */
-    public Drawable setBackDrawable(String level){
+    public Drawable getBackDrawable(String level){
 
         if(level.equals("easy")){
             return mContext.getResources().getDrawable(R.drawable.boder_easy);
@@ -63,11 +63,56 @@ public class SettingMode {
     }
 
     /**
+     * 난이도에 따른 버튼 select Drawable
+     * @param level 난이도
+     */
+    public Drawable getBackSelectDrawable(String level){
+
+        if(level.equals("easy")){
+            return mContext.getResources().getDrawable(R.drawable.select_easy_over_btn);
+
+        }else if(level.equals("normal")){
+            return mContext.getResources().getDrawable(R.drawable.select_normal_over_btn);
+
+        }else if(level.equals("hard")){
+            return mContext.getResources().getDrawable(R.drawable.select_hard_over_btn);
+
+        }else if(level.equals("hell")){
+            return mContext.getResources().getDrawable(R.drawable.select_hell_over_btn);
+        }
+
+        return mContext.getResources().getDrawable(R.drawable.select_easy_over_btn);
+    }
+
+    /**
+     * 난이도에 따른 설정 버튼 Drawable
+     * @param level 난이도
+     */
+    public Drawable getBackSelectSettingDrawable(String level){
+
+        if(level.equals("easy")){
+            return mContext.getResources().getDrawable(R.drawable.select_easy_setting_btn);
+
+        }else if(level.equals("normal")){
+            return mContext.getResources().getDrawable(R.drawable.select_normal_setting_btn);
+
+        }else if(level.equals("hard")){
+            return mContext.getResources().getDrawable(R.drawable.select_hard_setting_btn);
+
+        }else if(level.equals("hell")){
+            return mContext.getResources().getDrawable(R.drawable.select_hell_setting_btn);
+        }
+
+        return mContext.getResources().getDrawable(R.drawable.select_easy_setting_btn);
+    }
+
+
+    /**
      * 난이도에 따른 볼 최대값
      * @param level 난이도
      * @return 해당 난이도 최대값
      */
-    public String setLevelText(String level){
+    public String getLevelText(String level){
 
         if(level.equals("easy")){
             return String.valueOf(FinalValue.EASY_MAX_COUNT_BALL);
@@ -91,7 +136,7 @@ public class SettingMode {
      * @param level 난이도
      * @return 쓰레드 대기 시간
      */
-    public int setLevelSleepValue(String level){
+    public int getLevelSleepValue(String level){
 
         if(level.equals("easy")){
             return FinalValue.EASY_SLEEP_VALUE;
@@ -116,7 +161,7 @@ public class SettingMode {
      * @param bonusTouchCount 클릭 횟수
      * @return 계산 값
      */
-    public int setLevelBonusValue(String level, int bonusTouchCount){
+    public int getLevelBonusValue(String level, int bonusTouchCount){
 
         if(level.equals("easy")){
             return bonusTouchCount * 10;
@@ -141,7 +186,7 @@ public class SettingMode {
      * @param level 난이도
      * @return 볼 생성 주기
      */
-    public int setLevelIntervalTime(String level){
+    public int getLevelIntervalTime(String level){
 
         if(level.equals("easy")){
             return FinalValue.EASY_INTERVAL_VALUE;
@@ -160,4 +205,49 @@ public class SettingMode {
 
     }
 
+    /**
+     * 난이도 및 아이템에 따른 탭 값
+     * @param level 난이도
+     * @param item 아이템 종류
+     * @return 해당 난이도의 아이템 탭 값
+     */
+    public int getLevelItemValue(String level, String item){
+
+        if(item.equals("remove")){
+
+            if(level.equals("easy")){
+                return FinalValue.ITEM_REMOVE_EASY_TAP_VALUE;
+
+            }else if(level.equals("normal")){
+                return FinalValue.ITEM_REMOVE_NORMAL_TAP_VALUE;
+
+            }else if(level.equals("hard")){
+                return FinalValue.ITEM_REMOVE_HARD_TAP_VALUE;
+
+            }else if(level.equals("hell")){
+                return FinalValue.ITEM_REMOVE_HELL_TAP_VALUE;
+            }
+
+            return FinalValue.ITEM_REMOVE_EASY_TAP_VALUE;
+
+        }else {
+
+            if(level.equals("easy")){
+                return FinalValue.ITEM_TIME_EASY_TAP_VALUE;
+
+            }else if(level.equals("normal")){
+                return FinalValue.ITEM_TIME_NORMAL_TAP_VALUE;
+
+            }else if(level.equals("hard")){
+                return FinalValue.ITEM_TIME_HARD_TAP_VALUE;
+
+            }else if(level.equals("hell")){
+                return FinalValue.ITEM_TIME_HELL_TAP_VALUE;
+            }
+
+            return FinalValue.ITEM_TIME_EASY_TAP_VALUE;
+        }
+
+
+    }
 }

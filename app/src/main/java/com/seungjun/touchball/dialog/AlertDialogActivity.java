@@ -55,8 +55,11 @@ public class AlertDialogActivity extends Activity implements View.OnClickListene
 
         mSettingMode = new SettingMode(AlertDialogActivity.this);
 
-        resultMenu.setBackground(mSettingMode.setBackDrawable(level));
-        resultTitle.setBackgroundColor(mSettingMode.setBackColor(level));
+        resultMenu.setBackground(mSettingMode.getBackDrawable(level));
+        resultTitle.setBackgroundColor(mSettingMode.getBackColor(level));
+
+        restartGameBtn.setBackground(mSettingMode.getBackSelectDrawable(level));
+        returnMenuBtn.setBackground(mSettingMode.getBackSelectDrawable(level));
 
         mButtonThread = new ButtonThread();
         mButtonThread.start();

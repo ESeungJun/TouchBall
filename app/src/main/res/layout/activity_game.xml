@@ -37,6 +37,20 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/pause_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="|  |"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:id="@+id/text_ball_max"
                 android:paddingTop="10dp"
@@ -82,14 +96,66 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/pause_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="|  |"/>
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/item_remove_non_complete"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_item_ball_clear"/>
+
+                <ImageView
+                    android:id="@+id/item_remove_complete"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/clip_source"/>
+
+                <ImageView
+                    android:id="@+id/item_remove_active"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/item_ball_clear_fullactive"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/item_time_non_complete"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_item_time"/>
+
+                <ImageView
+                    android:id="@+id/item_time_complete"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/clip_source_time"/>
+
+                <ImageView
+                    android:id="@+id/item_time_active"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/item_time_fullactive"
+                    android:visibility="gone"/>
+
+            </FrameLayout>
 
         </LinearLayout>
+
+
 
         <LinearLayout
             android:orientation="vertical"
@@ -110,15 +176,6 @@
                 android:id="@+id/bonus_gage"
                 android:layout_gravity="center_horizontal"/>
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:progressDrawable="@drawable/custom_progress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:max="100"
-                android:id="@+id/item_gage"
-                android:layout_gravity="center_horizontal"/>
-
         </LinearLayout>
 
     </LinearLayout>
@@ -133,7 +190,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:scaleType="fitXY"
-        android:src="@drawable/test2"/>
+        android:scaleType="center"
+        android:src="@drawable/select_bonus_image"/>
 
 </LinearLayout>

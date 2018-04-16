@@ -159,10 +159,10 @@ public class CustomSelectDialog extends Dialog implements View.OnClickListener {
                 break;
         }
 
-        mDialogBack.setBackground(mSettingMode.setBackDrawable(mSetLevel));
-        mLeftButton.setBackground(mSettingMode.setBackDrawable(mSetLevel));
-        mRightButton.setBackground(mSettingMode.setBackDrawable(mSetLevel));
-        mTitleView.setBackgroundColor(mSettingMode.setBackColor(mSetLevel));
+        mDialogBack.setBackground(mSettingMode.getBackDrawable(mSetLevel));
+        mLeftButton.setBackground(mSettingMode.getBackSelectSettingDrawable(mSetLevel));
+        mRightButton.setBackground(mSettingMode.getBackSelectSettingDrawable(mSetLevel));
+        mTitleView.setBackgroundColor(mSettingMode.getBackColor(mSetLevel));
 
     }
 

@@ -3,7 +3,6 @@ package com.seungjun.touchball.value;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 /**
  * 공유하고 저장할 자원들의 모임
@@ -38,7 +37,7 @@ public class ShareData {
         if(mEditor != null){
             mEditor.putString(KEY_USER_TIME, userTime);
             mEditor.commit();
-//            Log.d(TAG, "Set User Time >>>> " + userTime);
+//            LogUtil.d(TAG, "Set User Time >>>> " + userTime);
         }
     }
 
@@ -66,7 +65,7 @@ public class ShareData {
         if(mEditor != null){
             mEditor.putLong(KEY_START_TIME, startTime);
             mEditor.commit();
-//            Log.d(TAG, "Set Start Time >>>> " + startTime);
+//            LogUtil.d(TAG, "Set Start Time >>>> " + startTime);
         }
     }
 
@@ -80,10 +79,10 @@ public class ShareData {
 
         if(mPreferences != null){
             startTime = mPreferences.getLong(KEY_START_TIME, startTime);
-//            Log.d(TAG, "Get Start Time >>>> " + startTime);
+//            LogUtil.d(TAG, "Get Start Time >>>> " + startTime);
             return startTime;
         }
-//        Log.d(TAG, "Get Null Start Time >>>> " + startTime);
+//        LogUtil.d(TAG, "Get Null Start Time >>>> " + startTime);
         return startTime;
     }
 

@@ -91,7 +91,7 @@
                 android:id="@+id/bt_left"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:background="@drawable/boder_easy"
+                android:background="@drawable/select_easy_setting_btn"
                 android:layout_weight="1"
                 android:textSize="15dp"/>
 
@@ -99,7 +99,7 @@
                 android:id="@+id/bt_right"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:background="@drawable/boder_easy"
+                android:background="@drawable/select_easy_setting_btn"
                 android:layout_weight="1"
                 android:textSize="15dp"/>
 

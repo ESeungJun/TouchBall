@@ -48,20 +48,41 @@
 
         <Button
             android:id="@+id/main_Start_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/select_main_btn"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:text="시작하기"/>
 
         <Button
             android:id="@+id/main_Setting_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_main_btn"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:text="난이도"/>
 
         <Button
-            android:id="@+id/main_Exit_btn"
-            android:layout_width="wrap_content"
+            android:id="@+id/main_Rank_btn"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_main_btn"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="랭킹보기"/>
+
+        <Button
+            android:id="@+id/main_Exit_btn"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/select_main_btn"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
             android:text="종료하기"/>
 
     </LinearLayout>

@@ -65,10 +65,10 @@ public class CustomDialog extends Dialog {
         }
 
 
-        mDialogBack.setBackground(mSettingMode.setBackDrawable(ShareData.getLevel()));
-        mLeftButton.setBackground(mSettingMode.setBackDrawable(ShareData.getLevel()));
-        mRightButton.setBackground(mSettingMode.setBackDrawable(ShareData.getLevel()));
-        mTitleView.setBackgroundColor(mSettingMode.setBackColor(ShareData.getLevel()));
+        mDialogBack.setBackground(mSettingMode.getBackDrawable(ShareData.getLevel()));
+        mLeftButton.setBackground(mSettingMode.getBackSelectSettingDrawable(ShareData.getLevel()));
+        mRightButton.setBackground(mSettingMode.getBackSelectSettingDrawable(ShareData.getLevel()));
+        mTitleView.setBackgroundColor(mSettingMode.getBackColor(ShareData.getLevel()));
 
     }
 

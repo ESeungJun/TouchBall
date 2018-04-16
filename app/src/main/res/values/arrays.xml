@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="rank_array">
+        <item>전체 랭킹</item>
+        <item>개인 기록</item>
+    </string-array>
+</resources>

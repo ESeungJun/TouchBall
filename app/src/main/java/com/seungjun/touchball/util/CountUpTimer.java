@@ -3,7 +3,6 @@ package com.seungjun.touchball.util;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
 
 /**
  * 카운트를 업해주는 타이머

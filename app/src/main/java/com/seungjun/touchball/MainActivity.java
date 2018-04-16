@@ -1,9 +1,10 @@
 package com.seungjun.touchball;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.seungjun.touchball.dialog.CustomDialog;
 import com.seungjun.touchball.dialog.CustomSelectDialog;
 import com.seungjun.touchball.game.MainGame;
+import com.seungjun.touchball.rank.RankActivity;
+import com.seungjun.touchball.util.LogUtil;
 import com.seungjun.touchball.util.SettingMode;
 import com.seungjun.touchball.value.ShareData;
 
@@ -20,6 +23,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button btnStart;
     private Button btnExit;
     private Button btnSetting;
+    private Button btnRank;
 
     private TextView mModeText;
 
@@ -51,6 +55,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnStart = (Button)findViewById(R.id.main_Start_btn);
         btnExit = (Button)findViewById(R.id.main_Exit_btn);
         btnSetting = (Button)findViewById(R.id.main_Setting_btn);
+        btnRank = (Button)findViewById(R.id.main_Rank_btn);
 
         mModeText = (TextView)findViewById(R.id.main_text_mode);
 
@@ -63,6 +68,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnStart.setOnClickListener(this);
         btnExit.setOnClickListener(this);
         btnSetting.setOnClickListener(this);
+        btnRank.setOnClickListener(this);
+    }
+
+    /**
+     * 랭킹 액티비티 출력 함수
+     */
+    public void onDialog(){
+        Intent popupIntent = new Intent(this, RankActivity.class);
+
+        PendingIntent pie= PendingIntent.getActivity(this, 0, popupIntent, PendingIntent.FLAG_ONE_SHOT);
+        try {
+            pie.send();
+
+        } catch (PendingIntent.CanceledException e) {
+            LogUtil.d(this.getClass().getSimpleName(), e.getMessage());
+        }
     }
 
     @Override
@@ -70,9 +91,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         final CustomDialog mCustomDialog = new CustomDialog(this, 0);
 
-        mCustomDialog.setTitle("나가기");
-        mCustomDialog.setContent("종료 하시겠습니까?");
-        mCustomDialog.setOkText("종료");
+        mCustomDialog.setTitle(getResources().getString(R.string.exit_popup_title));
+        mCustomDialog.setContent(getResources().getString(R.string.exit_popup_context));
+        mCustomDialog.setOkText(getResources().getString(R.string.exit_popup_ok_text));
         mCustomDialog.setOk(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +102,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             }
         });
 
-        mCustomDialog.setCancelText("취소");
+        mCustomDialog.setCancelText(getResources().getString(R.string.exit_popup_cancel_text));
         mCustomDialog.setCancel(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,9 +129,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 final CustomDialog mCustomDialog = new CustomDialog(this, 0);
 
-                mCustomDialog.setTitle("나가기");
-                mCustomDialog.setContent("종료 하시겠습니까?");
-                mCustomDialog.setOkText("종료");
+                mCustomDialog.setTitle(getResources().getString(R.string.exit_popup_title));
+                mCustomDialog.setContent(getResources().getString(R.string.exit_popup_context));
+                mCustomDialog.setOkText(getResources().getString(R.string.exit_popup_ok_text));
                 mCustomDialog.setOk(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -119,7 +140,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                 });
 
-                mCustomDialog.setCancelText("취소");
+                mCustomDialog.setCancelText(getResources().getString(R.string.exit_popup_cancel_text));
                 mCustomDialog.setCancel(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -134,7 +155,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.main_Setting_btn:
 
                 mCustomSelectDialog = new CustomSelectDialog(MainActivity.this, 0);
-                mCustomSelectDialog.setCancelText("취소");
+                mCustomSelectDialog.setCancelText(getResources().getString(R.string.setting_popup_cancel_text));
                 mCustomSelectDialog.setCancel(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -142,7 +163,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     }
                 });
 
-                mCustomSelectDialog.setOkText("설정");
+                mCustomSelectDialog.setOkText(getResources().getString(R.string.setting_popup_ok_text));
                 mCustomSelectDialog.setOk(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -150,7 +171,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                         mModeText.setText(String.format("\u003C %s \u003E", ShareData.getLevel()));
 
-                        mMainBackActivity.setBackgroundColor(mSettingMode.setBackColor(ShareData.getLevel()));
+                        mMainBackActivity.setBackgroundColor(mSettingMode.getBackColor(ShareData.getLevel()));
 
                         mCustomSelectDialog.dismiss();
                     }
@@ -158,6 +179,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
                 mCustomSelectDialog.show();
 
+                break;
+
+
+            case R.id.main_Rank_btn:
+                onDialog();
                 break;
         }
     }

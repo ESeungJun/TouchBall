@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#ffffff</color>
 
     <color name="easy_background">#af4eba6f</color>
     <color name="normal_background">#af955ba5</color>
     <color name="hard_background">#aff56462</color>
     <color name="hell_background">#af2d4255</color>
 
+    <color name="easy_select_background">#df4eba6f</color>
+    <color name="normal_select_background">#df955ba5</color>
+    <color name="hard_select_background">#dff56462</color>
+    <color name="hell_select_background">#df2d4255</color>
+
+    <color name="count_text_color_safe">#ffffff</color>
+    <color name="count_text_color_half">#ffff00</color>
+    <color name="count_text_color_danger">#ff0000</color>
 </resources>

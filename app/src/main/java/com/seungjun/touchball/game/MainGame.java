@@ -3,12 +3,12 @@ package com.seungjun.touchball.game;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ClipDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.seungjun.touchball.R;
 import com.seungjun.touchball.dialog.AlertDialogActivity;
 import com.seungjun.touchball.dialog.AlertDialogPauseActivity;
+import com.seungjun.touchball.util.LogUtil;
 import com.seungjun.touchball.util.SettingMode;
 import com.seungjun.touchball.value.FinalValue;
 import com.seungjun.touchball.value.ShareData;
@@ -39,7 +40,8 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
     private int addTime = 0; // 공이 추가되는 주기
     private static int bonusGage = 0; // 보너스 게이지
-    private int bonusTouchCount = 0;
+    private int bonusRemoveCount = 0; // 공간 아이템
+    private int bonusTimeCount = 0; // 시간 아이템
 
     public long timeLag = 0;
 
@@ -50,15 +52,30 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
     public static boolean flag = true; // 쓰레드 플래그
     private boolean isTimeStop = false; // 보너스 타임중이냐 아니냐
     private boolean isPause = false; // 일시정지 중이더냐
+    private boolean isActReItem = false; // 아이템 활성화가 되었느냐
+    private boolean isActTiItem = false; // 아이템 활성화가 되었느냐
+    private boolean isShowCountDown = false;
+    private boolean isShowPopup = false;
 
     private TextView mGameTime;
     private TextView mCountBall;
     private TextView mMaxCountBall;
+
     private ImageView mBonusImage;
+    private ImageView mItemRemoveNoComplete;
+    private ImageView mItemRemoveComplete;
+    private ImageView mItemRemoveActive;
+
+    private ImageView mItemTimeNoComplete;
+    private ImageView mItemTimeComplete;
+    private ImageView mItemTimeActive;
+
     private Button mPauseBtn;
     private ProgressBar mBonusGageBar;
 
     private LinearLayout mTextArea;
+    private ClipDrawable mItemRemoveClip;
+    private ClipDrawable mItemTimeClip;
 
     private static Timer mPlaytime;
 
@@ -81,9 +98,9 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
         mSettingMode = new SettingMode(MainGame.this);
 
-        mMaxCountBall.setText(mSettingMode.setLevelText(mLevelString));
-        mTextArea.setBackgroundColor(mSettingMode.setBackColor(mLevelString));
-        addTime = mSettingMode.setLevelIntervalTime(mLevelString);
+        mMaxCountBall.setText(mSettingMode.getLevelText(mLevelString));
+        mTextArea.setBackgroundColor(mSettingMode.getBackColor(mLevelString));
+        addTime = mSettingMode.getLevelIntervalTime(mLevelString);
 
         mRandomDrawableThread = new RandomDrawableThread(MainGame.this);
 
@@ -102,6 +119,8 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
                     mPlaytime = new Timer();
                     mPlaytime.schedule(new UpTimeTask(), 100, 50);
                     mRandomDrawableThread.start();
+                    flag = true;
+                    isShowCountDown = false;
                     ShareData.setStartTime(System.currentTimeMillis());
 
                     break;
@@ -113,6 +132,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
                 case PAUSE_START:
                     isPause = false;
+                    isShowCountDown = false;
                     ShareData.setStartTime(System.currentTimeMillis() - timeLag); // 일시정지 후 시작할때는 현재시간에서 경과시간을 빼준다
                     break;
             }
@@ -143,18 +163,25 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onPause() {
+        super.onPause();
 
+        if(!isShowCountDown && !isShowPopup && !ShareData.getIsGameOver()){
+            isPause = true;
+            isShowPopup = true;
+            Intent intent = new Intent(MainGame.this, AlertDialogPauseActivity.class);
+            startActivityForResult(intent, PAUSE);
+        }
     }
-
 
     @Override
     public void onBackPressed() {
-        isPause = true;
-        Intent intent = new Intent(MainGame.this, AlertDialogPauseActivity.class);
-        startActivityForResult(intent, PAUSE);
-
+        if(!isShowPopup){
+            isPause = true;
+            isShowPopup = true;
+            Intent intent = new Intent(MainGame.this, AlertDialogPauseActivity.class);
+            startActivityForResult(intent, PAUSE);
+        }
     }
 
     /**
@@ -169,20 +196,34 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
         mCircleCanvasView = (CircleCanvasView)findViewById(R.id.circle_Area);
 
         mBonusGageBar = (ProgressBar)findViewById(R.id.bonus_gage);
+
         mBonusImage = (ImageView)findViewById(R.id.bonus_image);
+        mItemRemoveNoComplete = (ImageView)findViewById(R.id.item_remove_non_complete);
+        mItemRemoveComplete = (ImageView)findViewById(R.id.item_remove_complete);
+        mItemRemoveActive = (ImageView)findViewById(R.id.item_remove_active);
+
+        mItemTimeNoComplete = (ImageView)findViewById(R.id.item_time_non_complete);
+        mItemTimeComplete = (ImageView)findViewById(R.id.item_time_complete);
+        mItemTimeActive = (ImageView)findViewById(R.id.item_time_active);
+
+        mItemRemoveClip = (ClipDrawable)mItemRemoveComplete.getDrawable();
+        mItemTimeClip = (ClipDrawable)mItemTimeComplete.getDrawable();
+
+        mItemRemoveClip.setLevel(0);
+        mItemTimeClip.setLevel(0);
 
         mTextArea = (LinearLayout)findViewById(R.id.textArea);
 
         mBonusImage.setOnClickListener(this);
+        mItemRemoveActive.setOnClickListener(this);
+        mItemTimeActive.setOnClickListener(this);
 
         mPauseBtn.setOnClickListener(this);
 
         mCircleCanvasView.setMainGame(this);
-//        mCircleCanvasView.setVisibility(View.VISIBLE);
 
         flag = true;
         bonusGage  = 0;
-
     }
 
     /**
@@ -202,6 +243,19 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
      */
     public void setBallCount(int ballCount){
         mCountBall.setText(String.format("%02d", ballCount));
+
+        int maxCount = Integer.parseInt(mSettingMode.getLevelText(ShareData.getLevel()));
+
+
+        if((maxCount * 0.5) <= ballCount && (maxCount * 0.8) > ballCount)
+            mCountBall.setTextColor(getResources().getColor(R.color.count_text_color_half));
+
+        else if((maxCount * 0.8) <= ballCount)
+            mCountBall.setTextColor(getResources().getColor(R.color.count_text_color_danger));
+
+        else
+            mCountBall.setTextColor(getResources().getColor(R.color.count_text_color_safe));
+
     }
 
     /**
@@ -213,10 +267,8 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
         if(bonusGage >= 100){//게이지 다차면 보너스 시작
             mBonusGageBar.setProgress(100);
-            Log.d(TAG, "게이지 다 찼다");
+            LogUtil.d(TAG, "게이지 다 찼다");
             isTimeStop = true;
-
-            bonusTouchCount = 0;
 
             mCircleCanvasView.setClickable(false);
             mCircleCanvasView.removeAllBall();
@@ -227,7 +279,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
             mBonusGageThread = new BonusGageThread();
             mBonusGageThread.start();
         }else{ // 안차면 채우기
-            Log.d(TAG, "Gage >>> " + bonusGage);
+            LogUtil.d(TAG, "Gage >>> " + bonusGage);
             mBonusGageBar.setProgress(bonusGage);
         }
     }
@@ -245,7 +297,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
         onDialog();
         mBonusGageBar.setProgress(0);
         mCircleCanvasView.setClickable(false);
-//        mCircleCanvasView.setVisibility(View.INVISIBLE);
+        mItemRemoveActive.setClickable(false);
 
         if(mPlaytime != null){
             mPlaytime.cancel();
@@ -275,7 +327,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
             pie.send();
 
         } catch (PendingIntent.CanceledException e) {
-            Log.d(this.getClass().getSimpleName(), e.getMessage());
+            LogUtil.d(this.getClass().getSimpleName(), e.getMessage());
         }
     }
 
@@ -284,26 +336,101 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
      * @param code 1이면 맨첨 시작 3이면 pause
      */
     private void showStartCount(int code){
+
+        isShowCountDown = true;
+        isShowPopup = false;
         Intent intent = new Intent(MainGame.this, CountStartGame.class);
         startActivityForResult(intent, code);
+    }
+
+
+    /**
+     * 공간 아이템 판단 함수
+     */
+    private void onRemoveItem(){
+
+        if(bonusRemoveCount >= FinalValue.MAX_TAP_VALUE){ //터치한 횟수가 clip의 최대치를 넘어갔으면
+            LogUtil.d(TAG, "Remove Item  >>> " + bonusRemoveCount);
+            isActReItem = true; // 아이템 활성화
+            mItemRemoveClip.setLevel(0); // clip은 0 으로 초기화
+
+            mItemRemoveActive.setVisibility(View.VISIBLE); //아이템 완성된거 보여주고
+            mItemRemoveNoComplete.setVisibility(View.GONE); // 다른 두개는 숨기기
+            mItemRemoveComplete.setVisibility(View.GONE);
+
+        }else{ // 안넘어 갔으면
+            isActReItem = false; // 아직 아이템 비활성화
+            bonusRemoveCount += mSettingMode.getLevelItemValue(mLevelString, "remove"); // 터치한 횟수에 레벨별 값 곱해주고
+
+            LogUtil.d(TAG, "Bonus Touch >>> " + bonusRemoveCount);
+            mItemRemoveClip.setLevel(bonusRemoveCount); // 그걸로 셋팅
+        }
+
+    }
+
+    /**
+     * 시간 아이템 판단 함수
+     */
+    private void onTimeItem(){
+
+        if(bonusTimeCount >= FinalValue.MAX_TAP_VALUE){ //터치한 횟수가 clip의 최대치를 넘어갔으면
+            LogUtil.d(TAG, "Time Item  >>> " + bonusTimeCount);
+            isActTiItem = true; // 아이템 활성화
+            mItemTimeClip.setLevel(0); // clip은 0 으로 초기화
+
+            mItemTimeActive.setVisibility(View.VISIBLE); //아이템 완성된거 보여주고
+            mItemTimeNoComplete.setVisibility(View.GONE); // 다른 두개는 숨기기
+            mItemTimeComplete.setVisibility(View.GONE);
+
+        }else{ // 안넘어 갔으면
+            isActTiItem = false; // 아직 아이템 비활성화
+            bonusTimeCount += mSettingMode.getLevelItemValue(mLevelString,"time"); // 터치한 횟수에 레벨별 값 곱해주고
+
+            LogUtil.d(TAG, "Time Item >>> " + bonusTimeCount);
+            mItemTimeClip.setLevel(bonusTimeCount); // 그걸로 셋팅
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.pause_btn:
-
-                isPause = true;
-                Intent intent = new Intent(MainGame.this, AlertDialogPauseActivity.class);
-                startActivityForResult(intent, PAUSE);
-
-                //일단 보류
+                if(!isShowPopup){
+                    isPause = true;
+                    isShowPopup = true;
+                    Intent intent = new Intent(MainGame.this, AlertDialogPauseActivity.class);
+                    startActivityForResult(intent, PAUSE);
+                }
                 break;
 
-            case R.id.bonus_image:
+            case R.id.bonus_image: // 보너스 이미지 클릭할 떄마다
 
-                bonusTouchCount += 1;
+                onRemoveItem();
+                onTimeItem();
 
+                break;
+
+            case R.id.item_remove_active:
+                mCircleCanvasView.removeAllBall();
+
+                bonusRemoveCount = 0;
+
+                mItemRemoveClip.setLevel(0);
+                mItemRemoveActive.setVisibility(View.GONE);
+                mItemRemoveNoComplete.setVisibility(View.VISIBLE);
+                mItemRemoveComplete.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.item_time_active:
+                addTime = mSettingMode.getLevelIntervalTime(mLevelString);
+
+                bonusTimeCount = 0;
+
+                mItemTimeClip.setLevel(0);
+                mItemTimeActive.setVisibility(View.GONE);
+                mItemTimeNoComplete.setVisibility(View.VISIBLE);
+                mItemTimeComplete.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -342,7 +469,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
                 mills = (mills/10) % 100; //100의 자리와 10의 자리만 출력
 
                 if(seconds >= 9 && seconds % i == 0){ // 여기서 런이 돌아가고 그림그리는 쓰레드에서 판단하는 데 약 1초가 소요되므로 9에서 판단
-                    Log.d(TAG, "Sec % 10 >>> " + seconds%9);
+                    LogUtil.d(TAG, "Sec % 10 >>> " + seconds%9);
                     i += 10;
 
                     if(i > 60){
@@ -386,13 +513,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
                     mBonusImage.setVisibility(View.GONE);
 
-                    Log.d(TAG, "Bonus Count >>> " + bonusTouchCount);
-
-                    int bonusTime = mSettingMode.setLevelBonusValue(mLevelString, bonusTouchCount);
-
-                    addTime = addTime + bonusTime;
-
-                    Log.d(TAG, "Add time + bonus >>> " +addTime);
+                    LogUtil.d(TAG, "Bonus Count >>> " + bonusRemoveCount);
                     break;
             }
         }
@@ -435,7 +556,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
                                 }
                             }
 
-                            Log.d(TAG, "Speed up >>> " + addTime);
+                            LogUtil.d(TAG, "Speed up >>> " + addTime);
 
                             isTenSec = false;
 
@@ -480,7 +601,7 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
         @Override
         public void run() {
-            Log.d(TAG, "GO!!");
+            LogUtil.d(TAG, "GO!!");
             while(bonusGage > 0){
 
                 if(!isPause){ // 일시정지 중이 아니면 돌고 일시정지 중이면 암것도 안하거
@@ -489,13 +610,13 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
                     }
 
                     --bonusGage;
-                    Log.d(TAG, "Gage >>> " + bonusGage);
+                    LogUtil.d(TAG, "Gage >>> " + bonusGage);
 
                     mBonusGageBar.setProgress(bonusGage);
 
                     try{
 
-                        int sleepTime = mSettingMode.setLevelSleepValue(mLevelString);
+                        int sleepTime = mSettingMode.getLevelSleepValue(mLevelString);
 
                         mBonusGageThread.sleep(sleepTime);
 
@@ -506,9 +627,17 @@ public class MainGame extends AppCompatActivity implements View.OnClickListener 
 
             }
 
-            if(bonusGage <= 0){
+            if(bonusGage <= 0){ // 보너스 게이지가 다 줄어들었으면
 
-                mBonusGageBar.setProgress(0);
+                mBonusGageBar.setProgress(0); // 보너스 게이지  0
+
+                if(isActReItem) {
+                    bonusRemoveCount = 0;
+                }
+
+                if(isActTiItem) {
+                    bonusTimeCount = 0;
+                }
 
                 if(mBonusGageThread != null){
                     mBonusGageThread.interrupt();

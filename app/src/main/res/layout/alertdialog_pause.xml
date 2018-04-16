@@ -11,61 +11,30 @@
         android:background="@drawable/boder_easy"
         android:layout_gravity="center">
 
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:text="일시 정지"
-            android:textSize="27dp"
-            android:textColor="#ffffff"
-            android:gravity="center"
-            android:background="#af4eba6f"
-            android:id="@+id/pause_textTitle"
-            android:visibility="gone"/>
-
         <LinearLayout
-            android:layout_below="@+id/pause_textTitle"
-            android:id="@+id/pause_result_area"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/pause_context"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:textSize="25dp"
-                android:text="@string/pause_context"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
             android:orientation="vertical"
             android:layout_centerHorizontal="true"
             android:paddingBottom="20dp"
-            android:gravity="center"
-            android:layout_below="@+id/pause_result_area">
+            android:gravity="center">
 
             <Button
                 android:id="@+id/restart_pause_game"
-                android:layout_width="180dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="계속하기"
+                android:textColor="#ffffff"
                 android:textSize="20dp"/>
 
             <Button
                 android:id="@+id/return_pause_menu"
-                android:layout_width="180dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="메인화면"
+                android:textColor="#ffffff"
                 android:textSize="20dp"/>
 
 
